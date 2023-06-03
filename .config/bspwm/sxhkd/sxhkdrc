@@ -26,7 +26,7 @@ alt + w
 
 # thunar
 alt + f
-  thunar
+  kitty --name Ranger ranger
 
 # telegram
 alt + m
@@ -34,7 +34,7 @@ alt + m
 
 # ranger
 alt + r
-  urxvt -name Ranger -e ranger
+  thunar
 
 # alt + c
 #   rofi -modi "clipboard:greenclip print" -show clipboard -run-command '{cmd}'

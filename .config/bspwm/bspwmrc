@@ -6,8 +6,16 @@
 # if you don't understand some bspc commands,
 # look them up in the bspc manual - `man bspc`
 
-# initialize 8 desktops with names in Roman numerals
-bspc monitor -d I II III IV V VI VII VIII
+# checks if external monitor is connected
+# if it is, then setup external monitor (VGA1) 
+# as second monitor right of primary monitor (LVDS1)
+if [[ $(xrandr -q | grep 'VGA1 connected') ]]; then
+  xrandr --output LVDS1 --primary --mode 1600x900 --rotate normal --output VGA1 --mode 1920x1200 --rotate normal --right-of LVDS1
+fi
+
+# initialize 8 desktops
+bspc monitor LVDS1 -d 1 2 3 4
+bspc monitor VGA1 -d 5 6 7 8
 
 # use predefined colors from file
 . "${HOME}/.config/bspwm/color"
@@ -34,12 +42,13 @@ do
   # try some new values to understand what is this
   bspc config -d ${SPACE} top_padding     0
   bspc config -d ${SPACE} bottom_padding  0
-  bspc config -d ${SPACE} left_padding   1
-  bspc config -d ${SPACE} right_padding  0
+  bspc config -d ${SPACE} left_padding   0.5
+  bspc config -d ${SPACE} right_padding  -1
 done
 
 # focused window outline
 bspc config border_width         1
+bspc config focused_border_color "#575757"
 
 # sets outline color for window in specific state
 # bspc config normal_border_color "$color8"
@@ -67,3 +76,6 @@ bspc config focus_follows_pointer true
 
 # load the first detected profile based on connected device
 /usr/bin/autorandr -c
+
+# fix for lags when resizing
+bspc config pointer_motion_interval 40
